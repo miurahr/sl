@@ -36,11 +36,13 @@
 #include <signal.h>
 #include <unistd.h>
 #include "sl.h"
+#include "sl-whistle.h"
 
 int ACCIDENT  = 0;
 int LOGO      = 0;
 int FLY       = 0;
 int C51       = 0;
+int WHISTLE   = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -61,6 +63,7 @@ void option(char *str)
 	    case 'F': FLY      = 1; break;
 	    case 'l': LOGO     = 1; break;
 	    case 'c': C51      = 1; break;
+      case 'w': WHISTLE  = 1; break;
 	    default:                break;
 	}
     }
@@ -82,6 +85,10 @@ int main(int argc, char *argv[])
     nodelay(stdscr, TRUE);
     leaveok(stdscr, TRUE);
     scrollok(stdscr, FALSE);
+
+    if (WHISTLE == 1) {
+        add_whistle();
+    }
 
     for (x = COLS - 1; ; --x) {
 	if (LOGO == 1) {
@@ -276,4 +283,9 @@ int add_smoke(int y, int x)
 	S[sum].ptrn = 0; S[sum].kind = sum % 2;
 	sum ++;
     }
+}
+
+add_whistle()
+{
+    play_whistle();
 }
